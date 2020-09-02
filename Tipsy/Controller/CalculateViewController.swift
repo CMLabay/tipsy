@@ -9,6 +9,8 @@
 import UIKit
 
 class CalculateViewController: UIViewController {
+    
+    var tipPercent: Float = 0.0
 
     @IBOutlet weak var tenPctButton: UIButton!
     @IBOutlet weak var billTextField: UITextField!
@@ -22,21 +24,24 @@ class CalculateViewController: UIViewController {
             tenPctButton.isSelected = false
             twentyPctButton.isSelected = false
             zeroPctButton.isSelected = true
+            tipPercent = 0.0
         } else if btnPressed == "10%" {
             zeroPctButton.isSelected = false
             tenPctButton.isSelected = true
             twentyPctButton.isSelected = false
-            
+            tipPercent = 0.1
         } else {
             twentyPctButton.isSelected = true
             tenPctButton.isSelected = false
             zeroPctButton.isSelected = false
+            tipPercent = 0.2
         }
     }
     @IBAction func stepValueChanged(_ sender: UIStepper) {
     }
     
     @IBAction func calcPressed(_ sender: UIButton) {
+        print( String(tipPercent))
     }
 
 
