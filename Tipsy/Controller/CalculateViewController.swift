@@ -14,6 +14,7 @@ class CalculateViewController: UIViewController {
     var numPeople = 2
     var totalPp = "0"
     var tipString = "0%"
+    var calcBrain = CalculatorBrain()
 
     @IBOutlet weak var tenPctButton: UIButton!
     @IBOutlet weak var billTextField: UITextField!
@@ -22,36 +23,29 @@ class CalculateViewController: UIViewController {
     @IBOutlet weak var splitNumLabel: UILabel!
     @IBAction func tipChanged(_ sender: UIButton) {
         billTextField.resignFirstResponder()
+        tenPctButton.isSelected = false
+        twentyPctButton.isSelected = false
+        zeroPctButton.isSelected = false
+        sender.isSelected = true
         let btnPressed = sender.currentTitle
         tipString = btnPressed!
         if btnPressed == "0%" {
-            tenPctButton.isSelected = false
-            twentyPctButton.isSelected = false
-            zeroPctButton.isSelected = true
-            tipPercent = 0.0
+            calcBrain.tipPercent = 0.0
         } else if btnPressed == "10%" {
-            zeroPctButton.isSelected = false
-            tenPctButton.isSelected = true
-            twentyPctButton.isSelected = false
-            tipPercent = 0.1
+            calcBrain.tipPercent = 0.1
         } else {
-            twentyPctButton.isSelected = true
-            tenPctButton.isSelected = false
-            zeroPctButton.isSelected = false
-            tipPercent = 0.2
+            calcBrain.tipPercent = 0.2
         }
     }
     @IBAction func stepValueChanged(_ sender: UIStepper) {
         billTextField.resignFirstResponder()
-        numPeople = Int(sender.value)
-        splitNumLabel.text = String(numPeople)
+        calcBrain.numPeople = Int(sender.value)
+        splitNumLabel.text = String(calcBrain.numPeople)
     }
     
     @IBAction func calcPressed(_ sender: UIButton) {
         if let total = billTextField.text {
-            let tip = Double(total)! * tipPercent
-            let split = ( Double(total)! + tip ) / Double(numPeople)
-            totalPp = String(format: "%.2f", split)
+            calcBrain.calculateSplit(bill: Double(total)!)
         }
         performSegue(withIdentifier: "goToResults", sender: self)
     }
@@ -59,8 +53,8 @@ class CalculateViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToResults" {
             let destinationVC = segue.destination as! ResultsViewController
-            destinationVC.totalPp = totalPp
-            destinationVC.numPeople = String(numPeople)
+            destinationVC.totalPp = calcBrain.getSplit()
+            destinationVC.numPeople = String(calcBrain.numPeople)
             destinationVC.tip = String(tipString)
         }
     }
