@@ -12,6 +12,8 @@ class CalculateViewController: UIViewController {
     
     var tipPercent = 0.0
     var numPeople = 2
+    var totalPp = "0"
+    var tipString = "0%"
 
     @IBOutlet weak var tenPctButton: UIButton!
     @IBOutlet weak var billTextField: UITextField!
@@ -21,6 +23,7 @@ class CalculateViewController: UIViewController {
     @IBAction func tipChanged(_ sender: UIButton) {
         billTextField.resignFirstResponder()
         let btnPressed = sender.currentTitle
+        tipString = btnPressed!
         if btnPressed == "0%" {
             tenPctButton.isSelected = false
             twentyPctButton.isSelected = false
@@ -48,7 +51,17 @@ class CalculateViewController: UIViewController {
         if let total = billTextField.text {
             let tip = Double(total)! * tipPercent
             let split = ( Double(total)! + tip ) / Double(numPeople)
-            let resultTo2DecimalPlaces = String(format: "%.2f", split)
+            totalPp = String(format: "%.2f", split)
+        }
+        performSegue(withIdentifier: "goToResults", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToResults" {
+            let destinationVC = segue.destination as! ResultsViewController
+            destinationVC.totalPp = totalPp
+            destinationVC.numPeople = String(numPeople)
+            destinationVC.tip = String(tipString)
         }
     }
 

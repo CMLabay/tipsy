@@ -9,26 +9,19 @@
 import UIKit
 
 class ResultsViewController: UIViewController {
-
+    var totalPp = "0"
+    var numPeople = "2"
+    var tip = "0"
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var settingsLabel: UILabel!
     @IBAction func recalculatePressed(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        totalLabel.text = totalPp
+        let deets = "Split between " + numPeople + " people, with " + tip + " tip"
+        settingsLabel.text = deets
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
